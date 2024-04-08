@@ -1,3 +1,4 @@
+import Navbar from "@/components/Navbar";
 import "./globals.css";
 import { Metadata } from "next";
 
@@ -14,8 +15,8 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-screen">
       <body suppressHydrationWarning className="leading-normal tracking-normal text-indigo-400 sm:flex-col p-6 bg-cover bg-fixed flex h-full">
-        
-          {children}
+        <Navbar />
+        {children}
       </body>
     </html>
   );

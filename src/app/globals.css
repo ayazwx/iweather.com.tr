@@ -7,9 +7,18 @@
   --foreground: black;
 }
 
-body {
-  background: url('/header.png')
+html {
+  width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
+
+body {
+  background: url('/header.png');
+  @apply leading-normal tracking-normal text-indigo-400 sm:flex-col p-6 bg-cover bg-fixed flex h-full
+}
+
 
 .bg-opacity-003 {
   background-color: rgba(255, 255, 255, 0.03);

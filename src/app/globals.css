@@ -6,22 +6,34 @@
   --background: white;
   --foreground: black;
 }
-
+* {
+  transition: all 0.3s;
+}
 html {
   width: 100vw;
-  height: 100vh;
   overflow-x: hidden;
   overflow-y: auto;
 }
+html {
+  @apply desk:h-full
+}
 
 body {
-  background: url('/header.png');
-  @apply leading-normal tracking-normal text-indigo-400 sm:flex-col p-6 bg-cover bg-fixed flex h-full
+  @apply leading-normal tracking-normal text-indigo-400 sm:flex-col p-6 flex h-full
 }
 
 
 .bg-opacity-003 {
   background-color: rgba(255, 255, 255, 0.03);
+}
+
+.gap-4 { /* tailwind gap is not working */
+  gap: 1rem;
+}
+
+.-left-1\/10 {
+  left: -10%;
+
 }
 
 /* [data-theme='dark'] {

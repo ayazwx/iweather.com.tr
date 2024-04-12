@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import Button from "./Button";
+import ThemeSwitcher from "@/theme/ThemeSwitcher";
 
 const navItems = [
   {
@@ -96,7 +97,7 @@ const Navbar = () => {
               alt="logo"
               className="mb-2 sm:opacity-0"
             />
-            <h1 className="text-md sm:opacity-0">iWeather</h1>
+            <h1 className="text-md sm:opacity-0 text-gray-800 font-bold dark:text-gray-100">iWeather</h1>
           </Link>
           {navItems.map((item) => (
             <Link
@@ -120,10 +121,13 @@ const Navbar = () => {
                 width={30}
                 height={30}
                 alt={item.name}
-                className=""
+                className="invert dark:invert-0"
               />
             </Link>
           ))}
+          {
+            <ThemeSwitcher />
+          }
         </div>
         <div className="w-full flex flex-col justify-center items-center mb-4">
           <Link href={"/settings"} onClick={() => setActive("/settings")}>
@@ -132,7 +136,7 @@ const Navbar = () => {
               width={50}
               height={50}
               alt="user"
-              className="rounded-full w-12 h-12"
+              className="rounded-full w-12 h-12 invert dark:invert-0"
             />
           </Link>
 

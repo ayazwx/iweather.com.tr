@@ -2,16 +2,39 @@ import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: [
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  darkMode: "class",
   theme: {
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      colors: {
+        "product": "#8FB2F5",
+        'base': {
+          "900": "#13131A",
+          "800": "#16161F",
+          "700": "#1C1C27",
+          "600": "#22222F",
+          "500": "#3B3B54",
+          "400": "#7F7F98",
+          "200": "#BFBFD4",
+          "100": "#FAFAFA",
+          "white": "#FFFFFF"
+        }
+      },
+      screens: {
+        sm: { min: "300px", max: "767px" },
+
+        md: { min: "768px", max: "1023px" },
+
+        lg: { min: "1024px", max: "1279px" },
+
+        xl: { min: "1280px", max: "1535px" },
+
+        desk: { min: "768px" },
+
+        "2xl": { min: "1536px" },
       },
     },
   },

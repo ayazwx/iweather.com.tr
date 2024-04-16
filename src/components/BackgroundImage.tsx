@@ -28,6 +28,7 @@ const BackgroundImage = () => {
 
   return (
     <img
+    id='background-image'
       ref={imageRef}
       src={background}
       style={{

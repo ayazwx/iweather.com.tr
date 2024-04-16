@@ -20,7 +20,7 @@ const SVGPasswordEye = ({ visible, className, size, onClick }: Props) => {
           height={size ? size : "24"}
           stroke="currentColor"
           className={`w-5 h-5 cursor-pointer ${className}`}
-          {...onClick}
+          onClick={() => onClick}
         >
           <path
             strokeLinecap="round"
@@ -39,7 +39,7 @@ const SVGPasswordEye = ({ visible, className, size, onClick }: Props) => {
           height={size ? size : "24"}
           stroke="currentColor"
           className={`w-5 h-5 cursor-pointer ${className}`}
-          {...onClick}
+          onClick={() => onClick}
         >
           <path
             strokeLinecap="round"

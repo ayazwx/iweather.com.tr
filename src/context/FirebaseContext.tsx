@@ -1,19 +1,38 @@
 // FirebaseContext.tsx
-import React, { createContext, useContext, useState } from 'react';
-import { app } from '../../firebase';
+import React, { createContext, useContext } from 'react';
+import { app, firestore } from '../../firebase';
 import {
   getAuth,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+  updateProfile,
+  updatePassword,
 } from 'firebase/auth';
 import useLocalStorage from '@/hooks/useLocalStorage';
-// import { addDoc, collection, getDocs, getFirestore, query, serverTimestamp, where } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { Location } from '@/types/ValueTypes';
+
+type UserType = {
+  name: string | null;
+  email: string | null;
+  logOut: () => void;
+  updateUserPhoto: (photoURL: string) => Promise<void>;
+  changePassword: (newPassword: string) => Promise<void>;
+  userPhoto: string | null;
+  updateUser: (displayName: string) => Promise<void>;
+  stars: Location[];
+  addStar: (stars: Location) => void;
+  getStars: () => void;
+  removeStar: (star: Location) => void;
+};
 
 type FirebaseContextType = {
   signInEmailPassword: (email: string, password: string) => Promise<any>;
-  createUserEmailPassword: (email: string, password: string) => Promise<any>;
-  user: any;
-  signOut: () => void;
+  createUserEmailPassword: (email: string, password: string, displayName: string) => Promise<any>;
+  signInWithGoogle: () => Promise<any>;
+  user: UserType | null;
 };
 
 const FirebaseContext = createContext<FirebaseContextType | null>(null);
@@ -34,40 +53,33 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({
   children,
 }) => {
   const [state, setValue] = useLocalStorage('auth');
-
-  // const getUserStars = async (user: any) => {
-  //   const db = getFirestore(app);
-
-  //   try {
-  //     console.log('trying to add document');
-  //     const docRef = await addDoc(collection(db, 'users'), {
-  //       starsList: ['istanbul', 'izmir', 'antalya'],
-  //     });
-  //     console.log('Document written with ID: ', docRef.id);
-  //   } catch (e) {
-  //     console.error('Error adding document: ', e);
-  //   }
-  //   // const querySnapshot = await getDocs(query(collection(db, 'users'), where('uid', '==', user.uid)));
-
-  //   // console.log('querySnapshot', querySnapshot);
-  //   // querySnapshot.forEach((doc) => {
-  //   //   console.log(`${doc.id} => ${doc.data()}`);
-  //   // });
-  // };
-  // getUserStars(state);
-
+  const [localStars, setLocalStars] = useLocalStorage('stars');
   const auth = getAuth(app);
-
-  const handleUser = (user: any) => {
-    if (user) {
-      setValue(user);
+  const handleUser = (auth: any) => {
+    if (auth) {
+      setValue(auth);
     }
   };
 
-  const signOut = () => {
+  const logOut = () => {
     setValue(null);
   };
 
+ 
+  const updateUser = async (displayName: string) => {
+    try {
+      const user = auth.currentUser;
+      if (user) {
+        await updateProfile(user, { displayName });
+        handleUser(user);
+      } else {
+        throw new Error('No user is currently signed in.');
+      }
+    } catch (error) {
+      console.error('Error updating user profile:', error);
+      throw error;
+    }
+  };
   const signInEmailPassword = (email: string, password: string) => {
     signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
       handleUser(userCredential.user);
@@ -75,21 +87,143 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({
     return state;
   };
 
-  const createUserEmailPassword = (email: string, password: string) => {
-    console.log(auth, email, password);
-    createUserWithEmailAndPassword(auth, email, password).then(
+  const createUserEmailPassword = (email: string, password: string, displayName: string) => {
+    return createUserWithEmailAndPassword(auth, email, password).then(
       (userCredential) => {
+        updateUser(displayName)
         handleUser(userCredential.user);
+        return updateProfile(userCredential.user, { displayName });
       }
-    );
-    return state;
+    ).then(() => {
+      return state;
+    });
   };
+
+  const signInWithGoogle = () => {
+    const provider = new GoogleAuthProvider();
+    return signInWithPopup(auth, provider).then((userCredential) => {
+      handleUser(userCredential.user);
+      return state;
+    });
+  };
+
+  const changePassword = (newPassword: string) => {
+    const user = auth.currentUser;
+    if (user) {
+      return updatePassword(user, newPassword);
+    } else {
+      return Promise.reject(new Error('No user is currently signed in.'));
+    }
+  };
+
+  const updateUserPhoto = async (photoURL: string) => {
+    try {
+      const user = auth.currentUser;
+      if (user) {
+        await updateProfile(user, { photoURL });
+        handleUser(user);
+      } else {
+        throw new Error('No user is currently signed in.');
+      }
+    } catch (error) {
+      console.error('Error updating user photo URL:', error);
+      throw error;
+    }
+  };
+
+  const stars = localStars || [];
+
+  const addStar = async (newStar : Location) => {
+    try {
+      const user = auth.currentUser;
+      if (user) {
+        const docRef = doc(firestore, 'users', user.uid);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const userData = docSnap.data();
+          if (userData) {
+            const currentStarsList: Location[] = userData.starsList ?? [];
+            const updatedStarsList = [...currentStarsList, newStar];
+            await setDoc(docRef, { starsList: updatedStarsList }, { merge: true });
+            console.log('New star added successfully:', newStar);
+            setLocalStars(updatedStarsList);
+          }
+        }
+      } else {
+        throw new Error('No user is currently signed in.');
+      }
+    } catch (error) {
+      console.error('Error adding new star:', error);
+      throw error;
+    }
+  }
+  const getStars = async () => {
+    console.log('fetching data');
+    try {
+      const user = auth.currentUser;
+      if (user) {
+        console.log('fetching data2');
+        const docRef = doc(firestore, 'users', user.uid);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          console.log('fetching data3', docSnap.exists());
+          const userData = docSnap.data();
+          if (userData) {
+            setLocalStars(userData.starsList);
+            console.log('User data fetched:', userData);
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+  }
+  const removeStar = async (starToRemove: Location) => {
+    try {
+      const user = auth.currentUser;
+      if (user) {
+        const docRef = doc(firestore, 'users', user.uid);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const userData = docSnap.data();
+          if (userData) {
+            const currentStarsList: Location[] = userData.starsList ?? [];
+            const updatedStarsList = currentStarsList.filter(star => star.name !== starToRemove.name);
+            await setDoc(docRef, { starsList: updatedStarsList }, { merge: true });
+            console.log('Star removed successfully:', starToRemove);
+            setLocalStars(updatedStarsList);
+          }
+        }
+      } else {
+        throw new Error('No user is currently signed in.');
+      }
+    } catch (error) {
+      console.error('Error removing star:', error);
+      throw error;
+    }
+  };
+  
+
+
+  const authUser: UserType | null = state ? {
+    name: state.displayName,
+    email: state.email,
+    updateUserPhoto,
+    logOut,
+    userPhoto: state.photoURL,
+    updateUser,
+    changePassword,
+    stars,
+    addStar,
+    getStars,
+    removeStar,
+  } : null;
 
   const value: FirebaseContextType = {
     signInEmailPassword,
     createUserEmailPassword,
-    user: state,
-    signOut,
+    signInWithGoogle,
+    user: authUser,
   };
 
   return (

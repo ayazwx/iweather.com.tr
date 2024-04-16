@@ -4,19 +4,19 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAL5LjR831JaN1uD36UyZJh15NZa1VbA-o",
-  authDomain: "iweather-next.firebaseapp.com",
-  projectId: "iweather-next",
-  storageBucket: "iweather-next.appspot.com",
-  messagingSenderId: "651901688714",
-  appId: "1:651901688714:web:9c327574c91766cfe60673",
-  measurementId: "G-KHCGTDSZ7V"
+  apiKey: process.env.FIREBASE_APIKEY,
+  authDomain: process.env.FIREBASE_AUTHDOMAIN,
+  projectId: process.env.FIREBASE_PROJECTID,
+  storageBucket: process.env.FIREBASE_STORAGEBUCKET,
+  messagingSenderId: process.env.FIREBASE_MESSAGINGSENDERID,
+  appId: process.env.FIREBASE_APPID,
+  measurementId: process.env.FIREBASE_MEASUREMENTID
 };
 // console.log(firebaseConfig);
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app);
+export const firestore = getFirestore(app);
 // const analytics = getAnalytics(firebaseApp);
 // console.log('app',app)
 // export const auth = getAuth()

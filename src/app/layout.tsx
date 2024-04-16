@@ -4,6 +4,7 @@ import { Nunito } from 'next/font/google';
 import Navbar from '@/components/Navbar';
 import Providers from '@/context/Providers';
 import BackgroundImage from '@/components/BackgroundImage';
+import { ToastComponent } from '@/components/Toast';
 
 const nunito = Nunito({
   weight: ['400', '700'],
@@ -28,6 +29,7 @@ export default function RootLayout({
           <BackgroundImage/>
           <Navbar />
           {children}
+          <ToastComponent />
         </Providers>
       </body>
     </html>

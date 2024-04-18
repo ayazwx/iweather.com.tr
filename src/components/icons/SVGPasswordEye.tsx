@@ -4,10 +4,10 @@ interface Props {
   visible: boolean;
   size?: number;
   className?: string;
-  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  handleClick?: () => void;
 };
 
-const SVGPasswordEye = ({ visible, className, size, onClick }: Props) => {
+const SVGPasswordEye = ({ visible, className, size, handleClick }: Props) => {
   return (
     <>
       {visible ? (
@@ -19,8 +19,8 @@ const SVGPasswordEye = ({ visible, className, size, onClick }: Props) => {
           width={size ? size : "24"}
           height={size ? size : "24"}
           stroke="currentColor"
-          className={`w-5 h-5 cursor-pointer ${className}`}
-          onClick={() => onClick}
+          className={`w-5 h-5 cursor-pointer ${className} invert dark:invert-0`}
+          onClick={handleClick}
         >
           <path
             strokeLinecap="round"
@@ -38,8 +38,8 @@ const SVGPasswordEye = ({ visible, className, size, onClick }: Props) => {
           width={size ? size : "24"}
           height={size ? size : "24"}
           stroke="currentColor"
-          className={`w-5 h-5 cursor-pointer ${className}`}
-          onClick={() => onClick}
+          className={`w-5 h-5 cursor-pointer ${className} invert dark:invert-0`}
+          onClick={handleClick}
         >
           <path
             strokeLinecap="round"

@@ -4,7 +4,7 @@ import Image from 'next/image';
 import React, { useRef, useEffect, useState } from 'react';
 
 const BackgroundImage = () => {
-    const urls = ['/header.png', '/background.png', 'weather.png']
+    const urls = ['/header.png', '/background.png', '/weather.png']
     const [background, setBackground] = useState(urls[0]);
     const { theme, resolvedTheme } = useTheme();
 

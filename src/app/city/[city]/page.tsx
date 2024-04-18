@@ -1,13 +1,15 @@
 
 "use client"
+import React, { useEffect, useState } from "react";
+
 import { fetchSearchGeo } from "@/api/FetchWeather";
 import WeatherHome from "@/components/WeatherHome";
-import React, { useEffect, useState } from "react";
+
 
 const Page = ({ params }: { params: { city: string } }) => {
   const [paramsCity, paramsCountry] = params.city.split('-')
-  const city = paramsCity.replace('%20', ' ')
-  const country = paramsCountry.replace('%20', ' ')
+  const city = paramsCity.includes('%20') ? paramsCity.replace('%20', ' ') : paramsCity
+  const country = paramsCountry.includes('%20') ? paramsCountry.replace('%20', ' ') : paramsCountry
   
   const [cityLatitude, setCityLatitude] = useState<number>(0)
   const [cityLongitude, setCityLongitude] = useState<number>(0)

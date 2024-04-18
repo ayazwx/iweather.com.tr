@@ -43,18 +43,9 @@ const Navbar = () => {
   const {user} = useFirebase()
 
   const logout = () => {
-    user.logOut()
+    user?.logOut()
     console.log('logout')
-    // firebase.auth().signOut().then(() => {
-    //   // Sign-out successful.
-    // }).catch((error) => {
-    //   // An error happened.
-    // });
-
-    //     deleteCookie(KEYS.TOKEN);
-    //     router.push("/auth/login");
-    //     router.refresh();
-    //   }}
+    router.push('/')
   };
 
   const openMobileMenu = () => {
@@ -130,7 +121,7 @@ const Navbar = () => {
               <div
                 className={`${
                   active === item.path && 'bg-white'
-                } w-full h-full absolute top-0 left-0 hover:bg-white opacity-10`}
+                } w-full h-full absolute top-0 left-0 hover:bg-white opacity-10 z-10`}
               ></div>
               <div
                 className={`${
@@ -152,9 +143,6 @@ const Navbar = () => {
           <Link href={'/settings'} onClick={() => setActive('/settings')}>
             <User />
           </Link>
-          {/* <Link href={"/register"} onClick={() => {}}>
-          <Image src="/icons/login.svg" width={50} height={50} alt="cl" className="w-8 h-8" />
-          </Link> */}
           {!user ? (
             <>
               <Link href={'/login'} onClick={() => setActive('/login')}>

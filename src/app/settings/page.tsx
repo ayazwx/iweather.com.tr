@@ -1,22 +1,23 @@
 'use client';
-import Input from '@/components/Input';
-import { useFirebase } from '@/context/FirebaseContext';
-import ThemeSwitcher from '@/theme/ThemeSwitcher';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useContext, useEffect, useState } from 'react';
-
 import { useFormik } from 'formik';
+import { useRouter } from 'next/navigation';
+
 import Container from '@/components/Container';
 import Button from '@/components/Button';
 import Loading from '@/components/Loading';
 import Card from '@/components/Card';
-import useLocalStorage from '../../hooks/useLocalStorage';
 import Modal from '@/components/Modal';
 import { registerSchema } from '@/yups/authYups';
+import Input from '@/components/Input';
+import { useFirebase } from '@/context/FirebaseContext';
+import { notifyError, notifyPromise } from '@/components/Toast';
 
 export default function Page() {
-  const { signInEmailPassword, createUserEmailPassword, user } = useFirebase();
+  const router = useRouter();
+  const { user } = useFirebase();
   console.log(user);
   const [profilePicture, setProfilePicture] = useState<string | null>(null);
   const [name, setName] = useState<string>('User');
@@ -36,31 +37,11 @@ export default function Page() {
     },
   });
 
-  const handeBackgroundChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0];
-    if (selectedFile) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const fileDataURL = reader.result as string;
-        setProfilePicture(fileDataURL);
-        user?.setProfilePicture(fileDataURL);
-      };
-      reader.readAsDataURL(selectedFile);
-    }
-  };
-
-  // useEffect(() => {
-  //   // signInEmailPassword("hello@gmail.com", "password");
-  //   createUserEmailPassword("helloworld@gmail.com", "password").then((userCredential) => {
-  //     const user = userCredential.user;
-  //     console.log(user);
-
-  //   })
-  // }
-  // , []);
   useEffect(() => {
     console.log(profilePicture);
-    user.updateUserPhoto(profilePicture);
+    if(profilePicture) {
+      user?.updateUserPhoto(profilePicture);
+    }
   }, [user]);
 
   const hadleEditProfilePhoto = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,12 +61,16 @@ export default function Page() {
   const handleUpdateProfilePhoto = () => {
     if (editingProfilePhoto) {
       console.log(editingProfilePhoto);
-      // user.updateUserPhoto(hadleEditProfilePhoto)
+      user?.updateUserPhoto(editingProfilePhoto)
     }
   };
 
   const handleDeleteAccount = () => {
-    console.log('delete');
+    notifyError('We are sorry to see you go!')
+    if (user) {
+      notifyPromise(user.deleteAccount(), 'Deleted Account', 'Error Deleting Account');
+    }
+    router.push('/');
   };
 
   const setBackground = (img: string) => {
@@ -94,24 +79,6 @@ export default function Page() {
       background.setAttribute('src', img);
     }
   };
-
-
-  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const selectedFile = e.target.files?.[0];
-  //   if (selectedFile) {
-  //     const reader = new FileReader();
-  //     reader.onload = () => {
-  //       const fileDataURL = reader.result as string;
-  //       setProfilePicture(fileDataURL);
-  //       user?.setProfilePicture(fileDataURL);
-  //     };
-  //     reader.readAsDataURL(selectedFile);
-  //   }
-  // };
-  // const removeFile = () => {
-  //   localStorage.removeItem('fileDataURL');
-  //   setProfilePicture(null);
-  // };
 
   return (
     <Container name='settings' claNamess='flex-wrap'>
@@ -162,7 +129,7 @@ export default function Page() {
               className='w-8 h-8 dark:invert absolute right-1 bottom-4'
             />
             <Image
-              src={`${profilePicture ? profilePicture : '/icons/user.svg'}`}
+              src={`${user?.userPhoto ?? '/icons/user.svg'}`}
               width={50}
               height={50}
               alt='user'
@@ -202,7 +169,7 @@ export default function Page() {
               type={'email'}
               id={'email'}
               placeholder={'name@company.com'}
-              value={user?.email}
+              {...formik.getFieldProps('email')}
               isDisabled={true}
             />
             <Input

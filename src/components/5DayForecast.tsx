@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect, useState } from "react";
-import { weekDayNames, weatherIcons } from "../constants/module";
-import { ForecastResponseData } from "../types/ForecastResponseType";
+import { weekDayNames, weatherIcons } from "@/constants/module";
+import { ForecastResponseData } from "@/types/ForecastResponseType";
 import { WeatherResponseData } from "@/types/WeatherResponseType";
 import { fetchForecast } from "@/api/FetchWeather";
 import Card from "./Card";

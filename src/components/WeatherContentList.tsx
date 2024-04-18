@@ -2,8 +2,6 @@ import React from 'react';
 import Image from 'next/image';
 import { WeatherResponseData } from '@/types/WeatherResponseType';
 import { formatWeatherContent } from '@/constants/module';
-import Card from './Card';
-
 
 interface WeatherContentListProps {
     data: WeatherResponseData;

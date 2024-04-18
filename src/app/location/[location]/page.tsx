@@ -1,7 +1,7 @@
 
 "use client"
+import React from "react";
 import WeatherHome from "@/components/WeatherHome";
-import React, { useState } from "react";
 
 const Page = ({ params }: { params: { location: string } }) => {
   const [longitude, latitude] = params.location.split('_')

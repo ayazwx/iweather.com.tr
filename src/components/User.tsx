@@ -1,19 +1,19 @@
 'use client';
-import { useFirebase } from '@/context/FirebaseContext';
-import useLocalStorage from '@/hooks/useLocalStorage';
+import React from 'react';
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+
+import { useFirebase } from '@/context/FirebaseContext';
 
 const User = () => {
     const {user} = useFirebase()
     
   return (
     <Image
-      src={user?.profilePicture || '/icons/user.svg'}
+      src={user?.userPhoto || '/icons/user.svg'}
       width={50}
       height={50}
       alt='user'
-      className={`rounded-full w-16 h-16 ${!user?.profilePicture && 'invert'} dark:invert-0`}
+      className={`rounded-full w-16 h-16 ${!user?.userPhoto ? 'invert': ''} dark:invert-0`}
     />
   );
 };

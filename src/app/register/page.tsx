@@ -1,26 +1,27 @@
 'use client';
-import Input from '@/components/Input';
-import { useFirebase } from '@/context/FirebaseContext';
-import ThemeSwitcher from '@/theme/ThemeSwitcher';
-import Image from 'next/image';
+import React, { useState } from 'react';
 import Link from 'next/link';
-import React, { useContext, useEffect, useState } from 'react';
-import { registerSchema } from '@/yups/authYups';
-
 import { useFormik } from 'formik';
+import { useRouter } from 'next/navigation';
+
+import Input from '@/components/Input';
+import { registerSchema } from '@/yups/authYups';
+import { useFirebase } from '@/context/FirebaseContext';
 import Container from '@/components/Container';
 import Button from '@/components/Button';
 import Loading from '@/components/Loading';
-import useLocalStorage from '../../hooks/useLocalStorage';
+import useLocalStorage from '@/hooks/useLocalStorage';
+import Card from '@/components/Card';
+import User from '@/components/User';
+import { notifyError, notifySuccess } from '@/components/Toast';
 
 export default function Page() {
-  // const {data, setData, city, setCity} = useContext(DataContext);
-  // console.log(data);
-  const { signInEmailPassword, createUserEmailPassword, user, signInWithGoogle } = useFirebase();
+  const router = useRouter();
+  const { createUserEmailPassword, user, signInWithGoogle } = useFirebase();
   console.log(user)
-  const [state, setValue, removeValue] = useLocalStorage('auth');
+  const [state, setValue] = useLocalStorage('auth');
   const [isLoading, setIsLoading] = useState(false);
-  const [message, setMessage] = useState('successfully signed')
+  const [message, setMessage] = useState('')
 
   const formik = useFormik({
     initialValues: {
@@ -43,6 +44,7 @@ export default function Page() {
           handleSuccess(response);
         } catch (error: any) {
           setMessage(`Error creating user: ${error.message}`);
+          notifyError('Error creating user!')
           console.error('Error creating user:', error);
         } finally {
           setIsLoading(false);
@@ -59,31 +61,26 @@ export default function Page() {
       })
       .catch((error) => {
         setMessage(`Error signing in with Google:, ${error}`)
+        notifyError('Error signing in with Google!')
         console.error('Error signing in with Google:', error);
       });
   };
 
   const handleSuccess = (auth: any) => {
+    notifySuccess(`User Created Successfully! ${auth.name}`)
     setValue(auth)
     console.log('response', auth);
     setMessage(`User Created Successfully! ${auth.name}`)
     setIsLoading(false)
+    notifySuccess('redirecting to home page...')
+    router.push('/')
   }
-
-
-  // useEffect(() => {
-  //   // signInEmailPassword("hello@gmail.com", "password");
-  //   createUserEmailPassword("helloworld@gmail.com", "password").then((userCredential) => {
-  //     const user = userCredential.user;
-  //     console.log(user);
-
-  //   })
-  // }
-  // , []);
 
   return (
     <Container>
-      <div className='desk:max-w-[400px] shadow rounded-lg p-8 sm:px-4'>
+      {
+        !user ? (
+          <div className='desk:max-w-[400px] shadow rounded-lg p-8 sm:px-4'>
         <h1 className='text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white'>
           Create an account
         </h1>
@@ -187,6 +184,26 @@ export default function Page() {
           </p>
         </form>
       </div>
+        ): <Card>
+          <h1 className='text-xl text-center font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white'>
+            Already Logged In
+          </h1>
+          <div className='flex flex-col items-center space-x-2'>
+            <User />
+            <p className='text-gray-900 dark:text-white'>{user.name}</p>
+            <p className='text-gray-900 dark:text-white'>{user.email}</p>
+            <Button
+              name={'Logout'}
+              onClick={() => {
+                user.logOut();
+                router.refresh();
+              }}
+              width='w-full'
+              viewTheme={2}
+            />
+          </div>
+        </Card>
+      }
     </Container>
   );
 }

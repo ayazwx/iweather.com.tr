@@ -1,6 +1,7 @@
 'use client';
-import Container from '@/components/Container';
 import React, { useEffect, useState } from 'react';
+
+import Container from '@/components/Container';
 import { weekDayNames, monthNames } from '@/constants/module';
 
 const Page = () => {

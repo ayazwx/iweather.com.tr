@@ -8,35 +8,45 @@ export const DataContext = createContext<{
   setData: (data: WeatherResponseData | null) => void;
   city: Location | null;
   setCity: (city: Location | null) => void;
-  homeCity: Location[] | null;
-  setHomeCity: (city: Location[] | null) => void;
+  homeCities: Location[] | null;
+  setHomeCities: (city: Location[] | null) => void;
   addHomeCity: (city: Location) => void;
+  removeHomeCity: (city: Location) => void;
 }>({
   data: null,
   setData: () => {},
   city: null,
   setCity: () => {},
-  homeCity: null,
-  setHomeCity: () => {},
+  homeCities: null,
+  setHomeCities: () => {},
   addHomeCity: () => {},
+  removeHomeCity: () => {},
 });
 
 const DataProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [data, setData] = useState<WeatherResponseData | null>(null);
-  const [homeCity, setHomeCity] = useLocalStorage("homeCity");
+  const [homeCities, setHomeCities] = useLocalStorage("homeCities");
   const [city, setCity] = useState<Location | null>(null);
 
   const addHomeCity = (city: Location) => {
-    if (homeCity) {
-      if (!homeCity.find((home: Location) => home.id === city.id)) {
-        setHomeCity([...homeCity, city]);
+    if (homeCities) {
+      if (!homeCities.find((home: Location) => home.id === city.id)) {
+        setHomeCities([...homeCities, city]);
       }
     } else {
-      setHomeCity([city]);
+      setHomeCities([city]);
     }
   }
+  const removeHomeCity = (city: Location) => {
+    console.log(city);
+    if (homeCities) {
+      console.log(homeCities.filter((home: Location) => home.name !== city.name && home.country !== city.country));
+      setHomeCities(homeCities.filter((home: Location) => home.name !== city.name && home.country !== city.country));
+    }
+  }
+
 
 
   const value = {
@@ -44,9 +54,10 @@ const DataProvider: React.FC<{ children: React.ReactNode }> = ({
     setData,
     city,
     setCity,
-    homeCity,
-    setHomeCity,
+    homeCities,
+    setHomeCities,
     addHomeCity,
+    removeHomeCity,    
   };
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;

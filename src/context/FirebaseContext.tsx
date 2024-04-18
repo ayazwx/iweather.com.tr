@@ -1,6 +1,6 @@
 // FirebaseContext.tsx
 import React, { createContext, useContext } from 'react';
-import { app, firestore } from '../../firebase';
+import { app, firestore } from '@/../firebase';
 import {
   getAuth,
   signInWithEmailAndPassword,
@@ -18,6 +18,7 @@ type UserType = {
   name: string | null;
   email: string | null;
   logOut: () => void;
+  deleteAccount: () => Promise<void>;
   updateUserPhoto: (photoURL: string) => Promise<void>;
   changePassword: (newPassword: string) => Promise<void>;
   userPhoto: string | null;
@@ -80,14 +81,14 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({
       throw error;
     }
   };
-  const signInEmailPassword = (email: string, password: string) => {
+  const signInEmailPassword = async (email: string, password: string) => {
     signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
       handleUser(userCredential.user);
     });
     return state;
   };
 
-  const createUserEmailPassword = (email: string, password: string, displayName: string) => {
+  const createUserEmailPassword = async (email: string, password: string, displayName: string) => {
     return createUserWithEmailAndPassword(auth, email, password).then(
       (userCredential) => {
         updateUser(displayName)
@@ -99,7 +100,7 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({
     });
   };
 
-  const signInWithGoogle = () => {
+  const signInWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
     return signInWithPopup(auth, provider).then((userCredential) => {
       handleUser(userCredential.user);
@@ -202,7 +203,18 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({
       throw error;
     }
   };
-  
+
+  const deleteAccount = async () => {
+    const user = auth.currentUser;
+    if (user) {
+      return user.delete().then(() => {
+        logOut();
+      });
+    } else {
+      return Promise.reject(new Error('No user is currently signed in.'));
+    }
+  }
+
 
 
   const authUser: UserType | null = state ? {
@@ -217,6 +229,7 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({
     addStar,
     getStars,
     removeStar,
+    deleteAccount,
   } : null;
 
   const value: FirebaseContextType = {

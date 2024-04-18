@@ -90,3 +90,7 @@ export function formatWeatherContent(data: WeatherResponseData): { icon: string;
         },
     ];
 }
+
+export function getRandomInt(max: number) {
+    return Math.floor(Math.random() * max);
+  }

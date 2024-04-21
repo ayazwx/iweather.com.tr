@@ -13,6 +13,7 @@ import {
 import useLocalStorage from '@/hooks/useLocalStorage';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { Location } from '@/types/ValueTypes';
+import { notifySuccess } from '@/components/Toast';
 
 type UserType = {
   name: string | null;
@@ -56,14 +57,17 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({
   const [state, setValue] = useLocalStorage('auth');
   const [localStars, setLocalStars] = useLocalStorage('stars');
   const auth = getAuth(app);
-  const handleUser = (auth: any) => {
-    if (auth) {
-      setValue(auth);
+  const handleUser = (user: any) => {
+    if (user) {
+      setValue(user);
+      getStars();
     }
   };
 
   const logOut = () => {
     setValue(null);
+    setLocalStars([]);
+    notifySuccess('Logged out successfully!');
   };
 
  
@@ -73,6 +77,7 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({
       if (user) {
         await updateProfile(user, { displayName });
         handleUser(user);
+        return state;
       } else {
         throw new Error('No user is currently signed in.');
       }
@@ -123,6 +128,7 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({
       if (user) {
         await updateProfile(user, { photoURL });
         handleUser(user);
+        return state;
       } else {
         throw new Error('No user is currently signed in.');
       }
@@ -140,15 +146,14 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({
       if (user) {
         const docRef = doc(firestore, 'users', user.uid);
         const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
+        if (docSnap) {
+          console.log('adding star', docSnap.data());
           const userData = docSnap.data();
-          if (userData) {
-            const currentStarsList: Location[] = userData.starsList ?? [];
+            const currentStarsList: Location[] = userData?.starsList ?? [];
             const updatedStarsList = [...currentStarsList, newStar];
             await setDoc(docRef, { starsList: updatedStarsList }, { merge: true });
             console.log('New star added successfully:', newStar);
             setLocalStars(updatedStarsList);
-          }
         }
       } else {
         throw new Error('No user is currently signed in.');
@@ -166,7 +171,7 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({
         console.log('fetching data2');
         const docRef = doc(firestore, 'users', user.uid);
         const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
+        if (docSnap) {
           console.log('fetching data3', docSnap.exists());
           const userData = docSnap.data();
           if (userData) {
@@ -178,7 +183,7 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
-  }
+  };
   const removeStar = async (starToRemove: Location) => {
     try {
       const user = auth.currentUser;

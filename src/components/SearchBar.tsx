@@ -41,11 +41,9 @@ const SearchBar: React.FC<Props> = ({
         const response = await fetchReverseGeocode(geoLocation.longitude, geoLocation.latitude)
       notifySuccess(`Found your location: ${response[0].name}, ${response[0].country}`);
       setSearch(`${response[0].name}, ${response[0].country}`);
-      console.log(response);
       }
     }
     if (!locationPermission) {
-      console.log('Getting current location...');
       const permission = await getLocationPermission();
       if (permission) {
         notify('Getting your location...');
@@ -65,7 +63,6 @@ const SearchBar: React.FC<Props> = ({
       setIsSearching(true);
       try {
         const response = await fetchSearchGeo(search);
-        console.log(response);
         setLocations(
           response.map((location, index) => ({
             id: getRandomInt(100000) + index,

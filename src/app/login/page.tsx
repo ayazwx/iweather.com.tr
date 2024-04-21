@@ -30,7 +30,6 @@ export default function Page() {
     onSubmit: (values) => {
       setIsLoading(true)
       setMessage('Sign In account...')
-      console.log(JSON.stringify(values, null, 2));
       const createUser = async () => {
         try {
           const response = await signInEmailPassword(
@@ -53,7 +52,7 @@ export default function Page() {
   const handleSignInWithGoogle = () => {
     signInWithGoogle()
       .then((user) => {
-        console.log('auth', user);
+        // console.log('auth', user);
       })
       .catch((error) => {
         setMessage(`Error signing in with Google:, ${error}`)
@@ -66,7 +65,6 @@ export default function Page() {
     setTimeout(() => {
       if(user) {
         
-        console.log('auth', user);
       var name = user.name ?? user.name ?? user.email ?? 'user'
       notifySuccess(`Sign In Successfully! ${name}`)
       setMessage(`Sign In Successfully! ${name}`)

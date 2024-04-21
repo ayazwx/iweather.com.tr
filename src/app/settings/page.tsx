@@ -18,7 +18,6 @@ import { notifyError, notifyPromise } from '@/components/Toast';
 export default function Page() {
   const router = useRouter();
   const { user } = useFirebase();
-  console.log(user);
   const [profilePicture, setProfilePicture] = useState<string | null>(null);
   const [name, setName] = useState<string>('User');
   const [editingProfilePhoto, setEditingProfilePhoto] = useState<
@@ -33,7 +32,6 @@ export default function Page() {
     },
     validationSchema: updateUserSchema,
     onSubmit: (values) => {
-      console.log(JSON.stringify(values, null, 2));
       if (values.name !== user?.name) {
         user?.updateUser(values.name);
       }
@@ -44,7 +42,6 @@ export default function Page() {
   });
 
   useEffect(() => {
-    console.log(profilePicture);
     if(profilePicture) {
       user?.updateUserPhoto(profilePicture);
     }
@@ -52,12 +49,10 @@ export default function Page() {
 
   const hadleEditProfilePhoto = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
-    console.log(selectedFile);
     if (selectedFile) {
       const reader = new FileReader();
       reader.onload = () => {
         const fileDataURL = reader.result as string;
-        console.log(fileDataURL);
         setEditingProfilePhoto(fileDataURL);
       };
       reader.readAsDataURL(selectedFile);
@@ -66,7 +61,6 @@ export default function Page() {
 
   const handleUpdateProfilePhoto = () => {
     if (editingProfilePhoto) {
-      console.log(editingProfilePhoto);
       user?.updateUserPhoto(editingProfilePhoto)
     }
   };

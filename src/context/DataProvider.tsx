@@ -40,9 +40,8 @@ const DataProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }
   const removeHomeCity = (city: Location) => {
-    console.log(city);
     if (homeCities) {
-      console.log(homeCities.filter((home: Location) => home.name !== city.name && home.country !== city.country));
+      // console.log(homeCities.filter((home: Location) => home.name !== city.name && home.country !== city.country));
       setHomeCities(homeCities.filter((home: Location) => home.name !== city.name && home.country !== city.country));
     }
   }

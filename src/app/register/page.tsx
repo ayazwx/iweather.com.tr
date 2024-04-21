@@ -18,7 +18,6 @@ import { notifyError, notifySuccess } from '@/components/Toast';
 export default function Page() {
   const router = useRouter();
   const { createUserEmailPassword, user, signInWithGoogle } = useFirebase();
-  console.log(user)
   const [state, setValue] = useLocalStorage('auth');
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState('')
@@ -33,7 +32,6 @@ export default function Page() {
     onSubmit: (values) => {
       setIsLoading(true)
       setMessage('Creating User...')
-      console.log(JSON.stringify(values, null, 2));
       const createUser = async () => {
         try {
           const response = await createUserEmailPassword(
@@ -69,7 +67,6 @@ export default function Page() {
   const handleSuccess = (auth: any) => {
     notifySuccess(`User Created Successfully! ${auth.name}`)
     setValue(auth)
-    console.log('response', auth);
     setMessage(`User Created Successfully! ${auth.name}`)
     setIsLoading(false)
     notifySuccess('redirecting to home page...')

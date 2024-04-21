@@ -13,7 +13,6 @@ export default function Home() {
 
   useEffect(() => {
     notify('Welcome to the Weather App!');
-    console.log("homeCities", homeCities);
     if (homeCities && homeCities.length > 0) {
       setActiveCity(homeCities[0]);
     } else {

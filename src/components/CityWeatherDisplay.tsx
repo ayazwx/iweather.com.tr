@@ -60,7 +60,6 @@ const CityWeatherDisplay: FC<CityWeatherDisplayProps> = ({ data, city }) => {
 
   const handleHomeCity = () => {
     if (isHomeCity) {
-        console.log("activeCity", activeCity);
       removeHomeCity(activeCity!);
     } else {
       addHomeCity(activeCity!);
@@ -71,7 +70,6 @@ const CityWeatherDisplay: FC<CityWeatherDisplayProps> = ({ data, city }) => {
       user?.removeStar(activeCity!);
     } else {
       if (user) {
-        console.log('activeCity', activeCity);
         user.addStar(activeCity!);
       } else {
         notify('Please sign in to star a city');

@@ -31,8 +31,6 @@ const Page = () => {
 
     setBlankDays(blankDaysArray);
     setNoOfDays(daysArray);
-    console.log(daysArray);
-    console.log(blankDaysArray);
   };
   useEffect(() => {
     getNoOfDays();

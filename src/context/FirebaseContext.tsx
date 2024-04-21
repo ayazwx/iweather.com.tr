@@ -147,12 +147,10 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({
         const docRef = doc(firestore, 'users', user.uid);
         const docSnap = await getDoc(docRef);
         if (docSnap) {
-          console.log('adding star', docSnap.data());
           const userData = docSnap.data();
             const currentStarsList: Location[] = userData?.starsList ?? [];
             const updatedStarsList = [...currentStarsList, newStar];
             await setDoc(docRef, { starsList: updatedStarsList }, { merge: true });
-            console.log('New star added successfully:', newStar);
             setLocalStars(updatedStarsList);
         }
       } else {
@@ -164,19 +162,15 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({
     }
   }
   const getStars = async () => {
-    console.log('fetching data');
     try {
       const user = auth.currentUser;
       if (user) {
-        console.log('fetching data2');
         const docRef = doc(firestore, 'users', user.uid);
         const docSnap = await getDoc(docRef);
         if (docSnap) {
-          console.log('fetching data3', docSnap.exists());
           const userData = docSnap.data();
           if (userData) {
             setLocalStars(userData.starsList);
-            console.log('User data fetched:', userData);
           }
         }
       }
@@ -196,7 +190,6 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({
             const currentStarsList: Location[] = userData.starsList ?? [];
             const updatedStarsList = currentStarsList.filter(star => star.name !== starToRemove.name);
             await setDoc(docRef, { starsList: updatedStarsList }, { merge: true });
-            console.log('Star removed successfully:', starToRemove);
             setLocalStars(updatedStarsList);
           }
         }

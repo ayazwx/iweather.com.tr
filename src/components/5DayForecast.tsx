@@ -23,16 +23,12 @@ interface FilteredForecast {
 const FiveDayForecast: React.FC<Props> = ({ data }) => {
     const [forecastList, setForecastList] = useState<FilteredForecast[]>([]);
     const [CityForecast, setCityForecast] = useState<ForecastResponseData>();
-    console.log("CityForecast", data);
 
 
     useEffect(() => {
-        console.log('5 day')
         const fetchWeather = async () => {
             const forecast = await fetchForecast(data.coord.lat, data.coord.lon)
-            console.log("forecast", forecast);
             setCityForecast(forecast);
-            console.log("forecast", forecast);
             const {
                 list: forecastList,
                 city: { timezone }

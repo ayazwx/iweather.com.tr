@@ -9,7 +9,6 @@ import { SearchGeoResponseData } from "@/types/SearchGeoResponseType";
 const fetchData = async (url: string) => {
     try {
         const response =  await axios.get(url + `&appid=${apiKey}`);
-        console.log("Data fetched successfully", url, response);
         return response.data;
     } catch (error) {
         console.error('axios error:', error, url);
@@ -22,9 +21,7 @@ export const fetchWeather = async (lon: number, lat: number): Promise<WeatherRes
 };
 
 export const fetchForecast = async (lon: number, lat: number): Promise<ForecastResponseData> => {
-        console.log("fetchForecast", lon, lat);
         const response = await fetchData(`${apiUrl}/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric`);
-        console.log(response)
         return response as ForecastResponseData;
 }
 

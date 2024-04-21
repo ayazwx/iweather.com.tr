@@ -2,8 +2,6 @@ import { WeatherResponseData } from "@/types/WeatherResponseType";
 
 export const apiUrl = process.env.WEATHER_API_URL
 export const apiKey = process.env.WEATHER_API_KEY
-console.log(process.env.WEATHER_API_URL)
-console.log(apiKey)
 
 export const weatherImages = {
     "01d" : "/weather-images/day-clear.svg",

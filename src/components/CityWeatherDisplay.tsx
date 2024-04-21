@@ -17,8 +17,7 @@ interface CityWeatherDisplayProps {
 }
 
 const CityWeatherDisplay: FC<CityWeatherDisplayProps> = ({ data, city }) => {
-  const { homeCities, removeHomeCity, setHomeCities, addHomeCity } =
-    useContext(DataContext);
+  const { homeCities, removeHomeCity, setHomeCities, addHomeCity } = useContext(DataContext);
   const [activeCity, setActiveCity] = useState<Location | null>(null);
   const [isHomeCity, setIsHomeCity] = useState(false);
   const [isStarred, setIsStarred] = useState(false);
@@ -40,8 +39,11 @@ const CityWeatherDisplay: FC<CityWeatherDisplayProps> = ({ data, city }) => {
                 (star) => star.name === data.name || star.name === city?.name
               ));
         }
+        if(!user) {
+            setIsStarred(false);
+        }
     }
-    , [user?.stars]);
+    , [user]);
 
   useEffect(() => {
     if (data) {
@@ -53,6 +55,7 @@ const CityWeatherDisplay: FC<CityWeatherDisplayProps> = ({ data, city }) => {
         country: data.sys.country,
       });
     }
+    
   }, [data]);
 
   const handleHomeCity = () => {
@@ -68,6 +71,7 @@ const CityWeatherDisplay: FC<CityWeatherDisplayProps> = ({ data, city }) => {
       user?.removeStar(activeCity!);
     } else {
       if (user) {
+        console.log('activeCity', activeCity);
         user.addStar(activeCity!);
       } else {
         notify('Please sign in to star a city');

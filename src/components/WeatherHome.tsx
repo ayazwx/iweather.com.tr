@@ -67,9 +67,9 @@ const WeatherHome = ({ cityLongitude, cityLatitude, homeCity }: Props) => {
           </div>
         </div>
       ) : homeCity ? (
-        <Card>
-          <p>Weather is Loading</p>
-          <Loading isLoading={true} />
+        <Card classes='flex flex-col w-full h-80 justify-center items-center gap-4'>
+        <Loading isLoading={true} />
+          <p className='text-gray-800 dark:text-gray-200'>Weather is Loading...</p>
         </Card>
       ) : null}
     </Container>

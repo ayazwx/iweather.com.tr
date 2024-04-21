@@ -44,7 +44,7 @@ const Page = () => {
             ))}
           </>
         ) : (
-          <h1>Sign in to see your stars</h1>
+          null
         )}
       </div>
       <h1 className='text-3xl mt-20 border-b-2 border-gray-800 dark:border-gray-200'>Your Stars {user ? stars.length : ''}</h1>

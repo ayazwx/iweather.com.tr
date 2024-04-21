@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useFormik } from 'formik';
@@ -18,8 +18,6 @@ import { notifyError, notifySuccess } from '@/components/Toast';
 export default function Page() {
   const router = useRouter();
   const { signInEmailPassword, user, signInWithGoogle } = useFirebase();
-  console.log(user)
-  const [state, setValue] = useLocalStorage('auth');
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState('')
 
@@ -39,7 +37,7 @@ export default function Page() {
             values.email,
             values.password,
           );
-          handleSuccess(response);
+          handleSuccess()
         } catch (error: any) {
           setMessage(`Error Sign In account: ${error.message}`);
           notifyError('Error Sign In account!')
@@ -54,8 +52,8 @@ export default function Page() {
   
   const handleSignInWithGoogle = () => {
     signInWithGoogle()
-      .then((userCredential) => {
-        handleSuccess(userCredential)
+      .then((user) => {
+        console.log('auth', user);
       })
       .catch((error) => {
         setMessage(`Error signing in with Google:, ${error}`)
@@ -64,15 +62,26 @@ export default function Page() {
       });
   };
 
-  const handleSuccess = (auth: any) => {
-    notifySuccess(`Sign In Successfully! ${auth.name}`)
-    setValue(auth)
-    console.log('response', auth);
-    setMessage(`Sign In Successfully! ${auth.name}`)
-    setIsLoading(false)
+  useEffect(() => {
+    setTimeout(() => {
+      if(user) {
+        
+        console.log('auth', user);
+      var name = user.name ?? user.name ?? user.email ?? 'user'
+      notifySuccess(`Sign In Successfully! ${name}`)
+      setMessage(`Sign In Successfully! ${name}`)
+      setIsLoading(false)
+      }
+    }
+    , 1000);
+  }
+  , [user]);
+
+  const handleSuccess = () => {
     notifySuccess('redirecting to home page...')
     router.push('/')
   }
+
 
   return (
     <Container>
@@ -161,7 +170,7 @@ export default function Page() {
             isDisabled={isLoading}
           />
           <div className='text-red-900'>
-            *{message}
+            {message ? `* ${message}` : ''}
           </div>
           </div>
           <p className='text-sm font-light text-black dark:text-white'>
@@ -187,6 +196,7 @@ export default function Page() {
               name={'Logout'}
               onClick={() => {
                 user.logOut();
+                setMessage('Logging out...')
                 router.refresh();
               }}
               width='w-full'

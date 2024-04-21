@@ -27,3 +27,15 @@ export const registerSchema = yup.object().shape({
     .bool()
     .oneOf([true], '* Please accept the terms and conditions'),
 });
+
+export const updateUserSchema = yup.object().shape({
+  name: yup.string(),
+  email: yup
+    .string()
+    .email('* Please enter a valid email'),
+  password: yup
+    .string()
+    .min(6, '* Password must be at least 6 characters')
+    .max(12, '* Password can be at most 12 characters')
+});
+

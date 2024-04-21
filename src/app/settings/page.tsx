@@ -10,7 +10,7 @@ import Button from '@/components/Button';
 import Loading from '@/components/Loading';
 import Card from '@/components/Card';
 import Modal from '@/components/Modal';
-import { registerSchema } from '@/yups/authYups';
+import { updateUserSchema } from '@/yups/authYups';
 import Input from '@/components/Input';
 import { useFirebase } from '@/context/FirebaseContext';
 import { notifyError, notifyPromise } from '@/components/Toast';
@@ -31,9 +31,15 @@ export default function Page() {
       password: '',
       name: user?.name || '',
     },
-    validationSchema: registerSchema,
+    validationSchema: updateUserSchema,
     onSubmit: (values) => {
       console.log(JSON.stringify(values, null, 2));
+      if (values.name !== user?.name) {
+        user?.updateUser(values.name);
+      }
+      if (values.password.length > 6 && values.password.length < 12) {
+        user?.changePassword(values.password);
+      }
     },
   });
 

@@ -50,7 +50,7 @@ const FiveDayForecast: React.FC<Props> = ({ data }) => {
 
 
     return (
-        <div className="shadow py-6 px-4 sm:px-4 overflow-x-visible dark:bg-gray-900 w-full flex h-full max-h-48 gap-4 max-w-full rounded-xl">
+        <div className="shadow py-6 px-4 sm:px-4 overflow-x-visible dark:bg-gray-900 w-full flex h-full max-h-[200px] gap-4 max-w-full rounded-xl">
         {forecastList.map((forecast, index) => {
             const { temp_max, temp_min, dt_txt } = forecast;
             const dayDate = new Date(dt_txt);

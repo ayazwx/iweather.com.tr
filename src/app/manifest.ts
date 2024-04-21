@@ -3,7 +3,7 @@ import { MetadataRoute } from 'next'
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: 'iWeather',
-    short_name: 'iW',
+    short_name: 'iWeather',
     description: 'Weather app',
     start_url: '/',
     display: 'standalone',

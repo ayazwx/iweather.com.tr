@@ -88,7 +88,7 @@ const SearchBar: React.FC<Props> = ({
 
 
   return (
-    <div className={`flex flex-col relative justify-center sm:justify-start items-center ${!data && 'desk:-mt-60'}`}>
+    <div className={`flex flex-col relative justify-center sm:justify-start items-center min-h-[80vh] ${!data && 'desk:-mt-60'}`}>
       <div className={`flex flex-col relative items-center justify-start gap-10`}>
       {
         !data && (

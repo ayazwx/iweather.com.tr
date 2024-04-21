@@ -174,7 +174,7 @@ export default function Page() {
           <p className='text-sm font-light text-black dark:text-white'>
             Don't have an account?{' '}
             <Link
-              href='/login'
+              href='/register'
               className='font-medium text-primary-600 hover:underline dark:text-primary-500'
             >
               Register here

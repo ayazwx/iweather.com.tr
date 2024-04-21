@@ -4,13 +4,20 @@ For English: [README-en.md](README-en.md)
 - Alternatif domain: [iweather-dev.vercel.app](https://iweather-dev.vercel.app)
 
 
-
+## Örnek Tasarım
 Bu proje, kullanıcının seçtiği şehrin güncel hava durumu bilgilerini gösteren bir hava durumu uygulamasıdır. Uygulama, OpenWeatherMap gibi popüler bir hava durumu API'sinden gerçek zamanlı verileri çeker. Aşağıdaki Tasarım örenk olarak verilip, istediğimiz detayı eklememiz istendi.
 ![Hava durumu uygulaması görselleri](public/readme/ss.png)
 
+## Proje Tasarımı
 Eklenen ve çıkarılan birçok özellik oldu ve en sonda aşağıdaki gibi özel bir tasarım yapabildim. Bu tasarım hiçbir yerden alınmayıp tamamen örnek hava durumu uygulamalarına bakıp ve bizden istenilen tasarıma ekleme yaparak tasarımını kendi css bilgimle oluşturmuş olduğum bir projedir.
 ![Hava durumu uygulaması görselleri](public/readme/s1.png)
 ![Hava durumu uygulaması görselleri](public/readme/s2.png)
+
+## Telefona uygulama olarak indirmek için
+- Telefonda tarayıcıdan güncel veya alternatif siteye gidip sağ üst kısımdaki üç nokta tıklanıp `uygulamayı yükle` yee tıklayıp uygulamayı kendi telefonunuza indirebilirsiniz.
+
+<img src="public/readme/mobil-ss-1.gif" alt="mobil download" width="300"/>
+<img src="public/readme/mobil-ss-2.gif" alt="mobil download" width="300"/>
 
 
 ## Kullanılan Teknolojiler
@@ -67,7 +74,7 @@ Kullanıcıdan konum bilgisini alıp işleyen yardımcı fonksiyondur.
 ### metadata
 
 ### manifest.ts
-Manifest sayesinde web uygulamasını
+Manifest sayesinde telefona uygulama olarak indirilebilir.
 
 # **Projede istenilen Gereksinimler**
 

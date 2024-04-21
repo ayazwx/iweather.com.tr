@@ -1,16 +1,23 @@
 # **React Internship Interview Project - React**
-Türkçe için: [README.md](README.md)
+For English: [README-en.md](README-en.md)
 - Current domain: [iweather.com.tr](https://iweather.com.tr)
 - Alternative domain: [iweather-dev.vercel.app](https://iweather-dev.vercel.app)
 
 
-
-This project is a weather application that displays current weather information for the selected city by the user. The application fetches real-time data from a popular weather API like OpenWeatherMap. The Design example was given below and we were asked to add the desired detail.
+## Sample Design
+This project is a weather application that displays current weather information for the selected city by the user. The application fetches real-time data from a popular weather API like OpenWeatherMap. The following Design is given as an example, and we were asked to add the desired details.
 ![Weather application visuals](public/readme/ss.png)
 
-There have been many features added and removed, and at the end, I was able to create a custom design like the one below. This design is not taken from anywhere and is completely created with my CSS knowledge by looking at sample weather applications and adding details requested from us.
+## Project Design
+Many features have been added and removed, and in the end, I was able to create a custom design like the one below. This design is not taken from anywhere and is completely created with my CSS knowledge by looking at sample weather applications and adding details requested from us.
 ![Weather application visuals](public/readme/s1.png)
 ![Weather application visuals](public/readme/s2.png)
+
+## Downloading the Application to Mobile
+- You can download the application to your phone by going to the current or alternative site from the browser on your phone, clicking on the three dots in the upper right corner, and then clicking on `install the application`.
+
+<img src="public/readme/mobil-ss-1.gif" alt="mobile download" width="300"/>
+<img src="public/readme/mobil-ss-2.gif" alt="mobile download" width="300"/>
 
 
 ## Technologies Used
@@ -24,7 +31,7 @@ There have been many features added and removed, and at the end, I was able to c
 - **formik:** Simplifies form operations for form management, offers features like validation and error handling.
 - **dotenv:** Allows loading environmental variables to enable the project to run in different environments and securely store sensitive information.
 - **next-themes:** Allows easy switching of themes in Next.js projects and applies themes based on user preferences.
-- **react-hot-toast:** I use it to show notifications to users.
+- **react-hot-toast:**  I use it to show notifications to users.
 - **yup:** Schema-based validation simplifies data validation processes, is customizable, and is a widely used validation library.
 
 # **Helper Functions Used in the Project**
@@ -67,7 +74,7 @@ After `location/`, Longitude `_` Latitude should be written.
 ### metadata
 
 ### manifest.ts
-Manifest allows the web application to...
+Through the manifest, the application can be downloaded to the phone.
 
 # **Required Features in the Project**
 

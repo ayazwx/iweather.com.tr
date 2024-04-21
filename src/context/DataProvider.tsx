@@ -1,24 +1,63 @@
-"use client"
+import React, { createContext, useState } from "react";
+import useLocalStorage from "@/hooks/useLocalStorage";
 import { Location } from "@/types/ValueTypes";
 import { WeatherResponseData } from "@/types/WeatherResponseType";
-import React, { useState } from "react";
 
-export const DataContext = React.createContext({
-  data: undefined as WeatherResponseData | undefined,
-  setData: (data: WeatherResponseData) => {},
-  city: undefined as Location | undefined,
-  setCity: (city: Location) => {},
+export const DataContext = createContext<{
+  data: WeatherResponseData | null;
+  setData: (data: WeatherResponseData | null) => void;
+  city: Location | null;
+  setCity: (city: Location | null) => void;
+  homeCities: Location[] | null;
+  setHomeCities: (city: Location[] | null) => void;
+  addHomeCity: (city: Location) => void;
+  removeHomeCity: (city: Location) => void;
+}>({
+  data: null,
+  setData: () => {},
+  city: null,
+  setCity: () => {},
+  homeCities: null,
+  setHomeCities: () => {},
+  addHomeCity: () => {},
+  removeHomeCity: () => {},
 });
 
-const DataProvider = ({ children }: { children: React.ReactNode }) => {
-  const [data, setData] = useState<WeatherResponseData>({ "base": "stations", "clouds": { "all": 100 }, "cod": 200, "coord": { "lat": 40.7127, "lon": -74.006 }, "dt": 1711236508, "id": 5128581, "main": { "feels_like": 0.05, "humidity": 86, "pressure": 1006, "temp": 5.5, "temp_max": 7.09, "temp_min": 3.48, "sea_level": 0, "grnd_level" : 0 }, "name": "New York", "sys": { "country": "US", "id": 2008101, "sunrise": 1711191216, "sunset": 1711235470, "type": 2 }, "timezone": -14400, "visibility": 10000, "weather": [{ "description": "overcast clouds", "icon": "04n", "id": 804, "main": "Clouds" }], "wind": { "deg": 340, "gust": 15.43, "speed": 10.8 } });
-  const [city, setCity] = useState<Location>();
+const DataProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const [data, setData] = useState<WeatherResponseData | null>(null);
+  const [homeCities, setHomeCities] = useLocalStorage("homeCities");
+  const [city, setCity] = useState<Location | null>(null);
+
+  const addHomeCity = (city: Location) => {
+    if (homeCities) {
+      if (!homeCities.find((home: Location) => home.id === city.id)) {
+        setHomeCities([...homeCities, city]);
+      }
+    } else {
+      setHomeCities([city]);
+    }
+  }
+  const removeHomeCity = (city: Location) => {
+    console.log(city);
+    if (homeCities) {
+      console.log(homeCities.filter((home: Location) => home.name !== city.name && home.country !== city.country));
+      setHomeCities(homeCities.filter((home: Location) => home.name !== city.name && home.country !== city.country));
+    }
+  }
+
+
 
   const value = {
     data,
     setData,
     city,
     setCity,
+    homeCities,
+    setHomeCities,
+    addHomeCity,
+    removeHomeCity,    
   };
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;

@@ -2,8 +2,10 @@ import { WeatherResponseData } from "@/types/WeatherResponseType";
 
 export const apiUrl = process.env.WEATHER_API_URL
 export const apiKey = process.env.WEATHER_API_KEY
+console.log(process.env.WEATHER_API_URL)
+console.log(apiKey)
 
-export const weatherIcons = {
+export const weatherImages = {
     "01d" : "/weather-images/day-clear.svg",
     "02d" : "/weather-images/day-cloudy.svg",
     "03d" : "/weather-images/day-few-clouds.svg",
@@ -24,7 +26,7 @@ export const weatherIcons = {
     "13n" : "/weather-images/night-storm.svg",
     "50n" : "/weather-images/night-clear.svg"
 }
-export const weatherImages = {
+export const weatherIcons = {
     "01d" : "/weather-icons/day-clear.svg",
     "02d" : "/weather-icons/day-few-clouds.svg",
     "03d" : "/weather-icons/day-cloudy.svg",
@@ -62,29 +64,33 @@ export const mpsToKph = function(mps: number): number {
 export function formatWeatherContent(data: WeatherResponseData): { icon: string; text: string; value: string | number }[] {
     return [
         {
-            icon: '/icons/thermometer-simple.png',
+            icon: '/icons/thermometer-simple.svg',
             text: "Thermal sensation",
-            value: data.main.feels_like + "°c",
+            value: parseInt(data.main.feels_like.toString()) + "°c",
         },
         {
-            icon: '/icons/cloud-rain.png',
+            icon: '/icons/cloud-rain.svg',
             text: "Probability of rain",
-            value: data.main.humidity + "%",
+            value: parseInt(data.main.humidity.toString()) + "%",
         },
         {
-            icon: '/icons/wind.png',
+            icon: '/icons/wind.svg',
             text: "Wind speed",
-            value: data.wind.speed + " km/h",
+            value: parseInt(data.wind.speed.toString()) + " km/h",
         },
         {
-            icon: '/icons/drop.png',
+            icon: '/icons/drop.svg',
             text: "Air humidity",
-            value: data.main.humidity + "%",
+            value: parseInt(data.main.humidity.toString()) + "%",
         },
         {
-            icon: '/icons/sun-dim.png',
+            icon: '/icons/sun-dim.svg',
             text: "UV Index",
-            value: data.main.feels_like,
+            value: parseInt(data.main.feels_like.toString()),
         },
     ];
 }
+
+export function getRandomInt(max: number) {
+    return Math.floor(Math.random() * max);
+  }

@@ -15,14 +15,16 @@ interface Props {
   isLoading?: boolean,
   isProcessing?: boolean,
   isDisabled?: boolean,
+  handleFocus?: () => void ,
+  handleBlur?: () => void,
 }
 
-export default function Input({label, type, id, placeholder, isRequired = false, isEye=false, isLoading=false, isProcessing=false, isDisabled=false, value,setValue, ...props}:Props) {
+export default function Input({label, type, id, placeholder, isRequired = false, isEye=false, isLoading=false, isProcessing=false, isDisabled=false, value,setValue, handleBlur, handleFocus, ...props}:Props) {
   const [isVisiblePassword, setIsVisiblePassword] = useState(false)
 
 
   return (
-    <div className="w-full min-w-[280px] relative">
+    <div className="w-full min-w-[280px] sm:min-w-[150px] relative">
       {
         label && (
           <label
@@ -44,9 +46,11 @@ export default function Input({label, type, id, placeholder, isRequired = false,
         className="px-4 py-2 w-80 sm:w-full bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-300 placeholder-gray-800 dark:placeholder-gray-500 rounded-md outline-none focus:ring focus:ring-blue-500"
         required={isRequired}
         disabled={isDisabled}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
       />
       {
-        isEye && <SVGPasswordEye visible={isVisiblePassword} className="absolute bottom-2.5 right-3" onClick={() => console.log(!isVisiblePassword)} />
+        isEye && <SVGPasswordEye visible={isVisiblePassword} className="absolute bottom-2.5 right-5 invert dark:invert-0" handleClick={() => setIsVisiblePassword(!isVisiblePassword)} />
       }
       {
         isLoading && <Loading isLoading={isProcessing} />

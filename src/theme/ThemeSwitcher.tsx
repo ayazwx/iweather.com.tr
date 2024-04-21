@@ -26,7 +26,7 @@ const ThemeSwitcher = () => {
             src={`/icons/theme/${!mounted ? 'system' : theme}.svg`}
             width={24}
             height={24}
-            alt={`${mounted ? 'system' : theme}`}
+            alt={`theme-icon`}
           />
       </div>
     </div>

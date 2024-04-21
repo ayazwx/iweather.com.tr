@@ -16,7 +16,7 @@ Eklenen ve çıkarılan birçok özellik oldu ve en sonda aşağıdaki gibi öze
 ## Telefona uygulama olarak indirmek için
 - Telefonda tarayıcıdan güncel veya alternatif siteye gidip sağ üst kısımdaki üç nokta tıklanıp `uygulamayı yükle` yee tıklayıp uygulamayı kendi telefonunuza indirebilirsiniz.
 
-<img src="public/readme/mobil-ss-1.gif" alt="mobil download" width="300"/>
+<img align="left" src="public/readme/mobil-ss-1.gif" alt="mobil download" width="300"/>
 <img src="public/readme/mobil-ss-2.gif" alt="mobil download" width="300"/>
 
 

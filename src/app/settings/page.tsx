@@ -90,7 +90,7 @@ export default function Page() {
     <Container name='settings' claNamess='flex-wrap'>
       <Loading isLoading={false} />
 
-      <Card name='User Settings'>
+      <Card name='User Settings' classes='sm:mt-10'>
         <div className='w-full flex flex-col justify-center items-center mb-4 relative'>
           <div className='relative'>
             {

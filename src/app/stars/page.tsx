@@ -21,7 +21,7 @@ const Page = () => {
 
   return (
     <Container name='stars' flexDirect='col'>
-      <h1 className='text-3xl border-b-2 border-gray-800 dark:border-gray-200'>Your Home Page Cities: {homeCities?.length}</h1>
+      <h1 className='text-3xl border-b-2 border-gray-800 dark:border-gray-200 sm:mt-10'>Your Home Page Cities: {homeCities?.length}</h1>
       <div className='flex flex-col gap-4'>
         {homeCities ? (
           <>

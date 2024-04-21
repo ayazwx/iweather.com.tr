@@ -51,7 +51,7 @@ const WeatherHome = ({ cityLongitude, cityLatitude, homeCity }: Props) => {
   }, [homeCity]);
 
   return (
-    <Container flexDirect='col'>
+    <Container flexDirect='col' height='h-full'>
       <SearchBar setCity={setCity} />
       {/* {
         homeCities && <CityWeather homeCities={homeCities} />
